@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import me.phelps.library.PopZoomGallery;
 import me.phelps.library.ZoomGalleryAdapter;
 import me.phelps.library.ZoomImageModel;
+import me.phelps.toolbox.util.L;
+import me.phelps.toolbox.util.SizeUtil;
 import uk.co.senab.photoview.PhotoView;
 
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
+        L.w("getScreenHeight"+SizeUtil.getScreenHeight(this));
 
         mGridView = (GridView) findViewById(R.id.grid_view);
         mAdapter = new GridViewAdapter();

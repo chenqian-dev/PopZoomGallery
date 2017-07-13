@@ -1,1 +1,2 @@
-include ':app', ':library'
+include ':app', ':library', ':lib'
+project(':lib').projectDir = new File('toolbox/lib')
