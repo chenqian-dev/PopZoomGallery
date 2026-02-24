@@ -1,6 +1,6 @@
 # PopZoomGallery
 
-![Demo](https://github.com/chenqian2651489/PopZoomGallery/blob/master/Untitled.gif)
+![Demo](./Untitled.gif)
 
 `PopZoomGallery` is a lightweight Android popup gallery that animates from
 thumbnail grids/lists into a fullscreen, swipeable, zoomable image viewer.
@@ -69,14 +69,17 @@ If already cloned:
 git submodule update --init --recursive
 ```
 
-2. Verify `settings.gradle` contains:
+2. If you want to run the demo app, verify `settings.gradle` contains:
 
 ```gradle
 include ':app', ':library', ':lib'
 project(':lib').projectDir = new File('toolbox/lib')
 ```
 
-3. Build demo app:
+For library-only integration in an existing app project, only `:library` is
+required.
+
+3. Build the demo app:
 
 ```bash
 ./gradlew :app:assembleDebug
@@ -101,8 +104,14 @@ dependencies {
 
 ```java
 ArrayList<ZoomImageModel> zoomImageList = new ArrayList<>();
+int firstVisible = gridView.getFirstVisiblePosition();
+int lastVisible = firstVisible + gridView.getChildCount() - 1;
+
 for (int i = 0; i < gridView.getCount(); i++) {
-    View child = gridView.getChildAt(i);
+    View child = null;
+    if (i >= firstVisible && i <= lastVisible) {
+        child = gridView.getChildAt(i - firstVisible);
+    }
     ZoomImageModel model = new ZoomImageModel();
 
     if (child != null) {
@@ -157,6 +166,7 @@ pop.showPop(gridView, startPosition);
 ## Important Notes
 
 - `rect` must come from `getLocationInWindow(...)` for correct animation.
-- If an item is off-screen (`GridView#getChildAt(i)` returns `null`), using an
-  empty `Rect` triggers fade-style close behavior.
+- `GridView#getChildAt(index)` uses *visible-child index*, not adapter index.
+- If an item is off-screen (no visible child view), using an empty `Rect`
+  triggers fade-style close behavior.
 - `PointIndicator` is not drawn when there is only one image.
